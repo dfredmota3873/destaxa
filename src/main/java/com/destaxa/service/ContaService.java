@@ -1,0 +1,134 @@
+package com.destaxa.service;
+
+import com.destaxa.exception.BusinessException;
+import com.destaxa.model.Conta;
+import com.destaxa.model.enums.Situacao;
+import com.destaxa.repository.ContaRepository;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
+
+import java.io.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class ContaService {
+
+    private final ContaRepository contaRepository;
+
+    DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Transactional
+    public Conta cadastrar(Conta conta) {
+
+        if(conta.getDataVencimento().isBefore(LocalDate.now()))
+            throw  new BusinessException("A data de vencimento não pode ser menor que a data de hoje.");
+
+        return contaRepository.save(conta);
+    }
+
+    public List<Conta> listarPorFiltro(LocalDate dataInicial, LocalDate dataFinal, String descricao, Pageable pageable) {
+
+        List<Conta> lista = contaRepository.listar(descricao, dataInicial, dataFinal);
+
+        return lista;
+    }
+
+    public Conta buscarPorId(UUID id){
+        return contaRepository.findById(id).orElseThrow(() -> new NotFoundException("Não existe conta com o id : " + id));
+    }
+
+    @Transactional
+    public Conta atualizar(UUID id, Conta conta) {
+
+        var contaDB = contaRepository.findById(id).orElseThrow(() -> new NotFoundException("Não existe conta com o id : " + id));
+
+        contaDB.setDescricao(conta.getDescricao());
+        contaDB.setValor(conta.getValor());
+        contaDB.setSituacao(conta.getSituacao());
+        contaDB.setDataVencimento(conta.getDataVencimento());
+        contaDB.setDataPagamento(conta.getDataPagamento());
+
+        return contaRepository.save(contaDB);
+    }
+
+    public BigDecimal valorTotalPorPeriodo(LocalDate dataInicial, LocalDate dataFinal) {
+        return contaRepository.valorTotalPorPeriodo(dataInicial, dataFinal);
+    }
+
+    public void carregarCsvContas(MultipartFile file) {
+
+            List<Conta> contas = new ArrayList<>();
+
+        try (
+                Reader reader = readCSVFile(file);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+        ) {
+            for (CSVRecord csvRecord : csvParser) {
+
+                String[] array = csvRecord.get(0).split(";");
+
+                String dtVencimento = array[0];
+                String dtPagamento  = array[1];
+                String valor        = array[2];
+                String descricao    = array[3];
+                String situacao     = array[4];
+
+                LocalDate  dtVencimentoEntity = LocalDate.parse(dtVencimento, DATEFORMATTER);
+                LocalDate  dtPagamentoEntity = LocalDate.parse(dtPagamento, DATEFORMATTER);
+                BigDecimal valorEntity = new BigDecimal(valor);
+                Situacao situacaoEnum = Situacao.valueOf(situacao);
+
+                contas.add(Conta.builder()
+                                .dataVencimento(dtVencimentoEntity)
+                                .dataPagamento(dtPagamentoEntity)
+                                .descricao(descricao)
+                                .valor(valorEntity)
+                                .situacao(situacaoEnum).build());
+
+            }
+
+            this.contaRepository.saveAll(contas);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    private BufferedReader readCSVFile(MultipartFile file) throws IOException {
+
+        BufferedReader br = null;
+
+        List<String> result = new ArrayList<>();
+        try {
+
+            String line;
+            InputStream is = file.getInputStream();
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                result.add(line);
+            }
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return br;
+    }
+
+
+}
