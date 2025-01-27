@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @Builder
-public class TransactionResponse {
+public class AuthorizationResponse {
 
     @JsonProperty(value = "payment_id")
     private String paymentId;

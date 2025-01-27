@@ -1,11 +1,7 @@
 package com.destaxa.converter;
 
 import com.destaxa.api.dto.request.AuthorizationRequest;
-import com.destaxa.api.dto.request.ContaRequest;
-import com.destaxa.api.dto.response.ContaResponse;
 import com.destaxa.model.Authorization;
-import com.destaxa.model.Conta;
-import com.destaxa.model.enums.Situacao;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

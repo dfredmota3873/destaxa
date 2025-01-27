@@ -1,8 +1,5 @@
 package com.destaxa.service;
 
-import com.destaxa.model.Conta;
-import com.destaxa.model.enums.Situacao;
-import com.destaxa.repository.ContaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

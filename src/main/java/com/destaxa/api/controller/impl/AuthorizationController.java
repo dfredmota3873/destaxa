@@ -2,7 +2,6 @@ package com.destaxa.api.controller.impl;
 
 import com.destaxa.api.controller.doc.IAuthorizationController;
 import com.destaxa.api.dto.request.AuthorizationRequest;
-import com.destaxa.api.dto.response.ContaResponse;
 import com.destaxa.converter.AuthorizationConverter;
 import com.destaxa.service.AuthorizationService;
 import lombok.AllArgsConstructor;

@@ -1,0 +1,16 @@
+<isopackager headerLength="14">
+    <isofield id="0" length="4" name="CODIGO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="1" length="32" name="MAPA" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="2" length="20" name="NUMERO DO CARTAO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="3" length="6" name="CODIGO DO PROCESSAMENTO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="4" length="12" name="VALOR DA TRANSACAO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="7" length="10" name="DATA HORA TRANSMISSAO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="11" length="6" name="NSU" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="12" length="6" name="HORA LOCAL TRANSACAO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="13" length="6" name="DATA LOCAL TRANSACAO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="14" length="4" name="DATA VENCIMENTO CARTAO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="22" length="3" name="MODO DE ENTRADA" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="42" length="15" name="CODIGO ESTABELECIMENTO" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="48" length="10" name="CODIGO DE SEGURANÇA" class="org.jpos.iso.IFA_LLLCHAR"/>
+    <isofield id="67" length="2" name="NUMERO DE PARCELAS" class="org.jpos.iso.IFA_LLLCHAR"/>
+</isopackager>

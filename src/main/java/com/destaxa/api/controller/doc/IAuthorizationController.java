@@ -1,7 +1,6 @@
 package com.destaxa.api.controller.doc;
 
 import com.destaxa.api.dto.request.AuthorizationRequest;
-import com.destaxa.api.dto.response.ContaResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
